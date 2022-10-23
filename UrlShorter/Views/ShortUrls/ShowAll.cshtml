@@ -1,0 +1,52 @@
+﻿@model List<ShortUrl>
+@{
+    ViewData["Title"] = "Details of a short URL";
+}
+
+<br />
+<div class="jumbotron">
+    <h1>URL Shortener</h1>
+    <br />
+    @if (Model.Capacity > 0 && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <a class="btn btn-danger float-right" asp-action="DeleteAllUrls">
+            <i class="bi bi-eye-fill"></i> Delete All
+        </a>
+    }
+    <br />
+    @foreach (var item in Model)
+    {
+        <ul>
+            <li>
+                <span class="col-md-2">
+                    <strong>URL Id:</strong>
+                </span>
+                @item.Id
+            </li>
+            <li>
+                <span class="col-md-2">
+                    <strong>Original URL:</strong>
+                </span>
+                <a href="@item.OriginalUrl">
+                    @item.OriginalUrl
+                </a>
+            <li>
+                <span class="col-md-2">
+                    <strong>Created by User:</strong>
+                </span>
+                <span>
+                        @item.User.Email
+                </span>
+            </li>
+            <a class="btn btn-outline-primary float-right" asp-action="Show" asp-route-id="@item.Id">
+                <i class="bi bi-eye-fill"></i> Show Details
+            </a>
+            @if (@User.Identity.Name == item.User.UserName || User.IsInRole("Admin"))
+            {
+                <a class="btn btn-danger float-right" asp-action="DeleteUrl" asp-route-id="@item.Id">
+                    <i class="bi bi-eye-fill"></i> Delete
+                </a>
+            }
+        </ul>
+    }
+</div>

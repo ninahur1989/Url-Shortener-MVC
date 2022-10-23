@@ -1,0 +1,58 @@
+﻿@model ShortUrl
+@{
+    ViewData["Title"] = "Details of a short URL";
+}
+
+<br />
+<div class="jumbotron">
+    <h1>URL Shortener</h1>
+    <br />
+    <p>You can see below the details of this short URL.</p>
+    <br />
+    <ul>
+        <li>
+            <span class="col-md-2">
+                <strong>URL Id:</strong>
+            </span>
+            @Model.Id
+        </li>
+        <li>
+            <span class="col-md-2">
+                <strong>Original URL:</strong>
+            </span>
+            <a href="@Model.OriginalUrl">
+                @Model.OriginalUrl
+            </a>
+        </li>
+        <li>
+            <span class="col-md-2">
+                <strong>Short URL:</strong>
+            </span>
+            <a asp-controller="ShortUrls" asp-action="RedirectTo" asp-route-path="@ViewData["Path"]">
+                http://localhost:5000/@ViewData["Path"]
+            </a>
+        </li>
+        <li>
+            <span class="col-md-2">
+                <strong>Created Date:</strong>
+            </span>
+            <span>
+                @Model.CreatedDate
+            </span>
+        </li>
+        <li>
+            <span class="col-md-2">
+                <strong>Created by User:</strong>
+            </span>
+            <span>
+                @Model.User.Email
+            </span>
+        </li>
+        @if (@User.Identity.Name == Model.User.UserName || User.IsInRole("Admin"))
+        {
+            <a class="btn btn-danger float-right" asp-action="DeleteUrl" asp-route-id="@Model.Id">
+                <i class="bi bi-eye-fill"></i> Delete
+            </a>
+        }
+    </ul>
+</div>
